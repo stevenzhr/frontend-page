@@ -14,6 +14,7 @@
 <!--    device table -->
     <div>
       <el-table :data="tableData"
+                :cell-style="tableAddClass"
                 border
                 stripe
                 style="width: 100%">
@@ -76,7 +77,8 @@ export default {
       form: {},
       dialogVisible: false,
       search: '',
-      tableData: []
+      tableData: [],
+      username: localStorage.getItem("username")
     }
   },
   created() {
@@ -86,7 +88,8 @@ export default {
     load() {
       request.get("http://localhost:9090/device", {
       params: {
-        search: this.search
+        search: this.search,
+        username: this.username
       }
       }).then(res => {
         this.tableData = res.data
@@ -97,6 +100,7 @@ export default {
       this.form = {}
     },
     save() {
+      this.form.username = this.username
       request.post("http://localhost:9090/device", this.form).then(res => {
         if (res.code === '0') {
           this.$message({
@@ -115,11 +119,12 @@ export default {
       this.dialogVisible = false
     },
     handleEdit(row) {
-      this.form = JSON.parse(JSON.stringify(row))
-      if (this.form.status === "on")
-        this.form.status = "off";
+      this.form.device = JSON.parse(JSON.stringify(row))
+      if (this.form.device.status === "on")
+        this.form.device.status = "off";
       else
-        this.form.status = "on"
+        this.form.device.status = "on"
+      this.form.username = this.username
       request.put("http://localhost:9090/device", this.form).then(res => {
         if (res.code === '0') {
           this.$message({
@@ -136,7 +141,6 @@ export default {
       })
 
     },
-
     handleDelete(deviceId) {
       request.delete("http://localhost:9090/device/" + deviceId).then(res => {
         if (res.code === '0') {
@@ -152,6 +156,12 @@ export default {
         }
         this.load()
       })
+    },
+    tableAddClass({row, column, rowIndex, columnIndex}) {
+      if (row.status === 'off') {
+        return {'color': 'red'}
+      }
+      return {'color': 'green'}
     }
   }
 }

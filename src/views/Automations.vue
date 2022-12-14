@@ -91,7 +91,7 @@ export default {
   },
   methods: {
     loadDeviceList() {
-      request.get("http://localhost:9090/device").then(res => {
+      request.get("http://localhost:9090/device?search=0&username=" + this.form.username).then(res => {
         this.device_list = res.data
       })
     },

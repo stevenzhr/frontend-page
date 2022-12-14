@@ -3,7 +3,6 @@
 <!--    utilities   -->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">Add new device</el-button>
-<!--      <el-button type="primary">Export</el-button>-->
     </div>
 
 <!--    search box   -->

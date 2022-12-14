@@ -5,12 +5,12 @@
     <div style="width: 100px">
       <el-dropdown style="display: contents">
         <el-button type="primary">
-          Admin<el-icon class="el-icon--right"></el-icon>
+          {{ username }}<el-icon><ArrowDown /></el-icon>
         </el-button>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>Info</el-dropdown-item>
-            <el-dropdown-item>Logout</el-dropdown-item>
+            <el-dropdown-item @click = test()>Info</el-dropdown-item>
+            <el-dropdown-item @click = logout()>Logout</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -18,9 +18,26 @@
   </div>
 </template>
 
+
 <script>
+import router from "@/router";
+
 export default {
-  name: "Header"
+  name: "Header",
+  data() {
+    return {
+      username: localStorage.getItem("username")
+    }
+  },
+  methods: {
+    logout() {
+      localStorage.removeItem("username");
+      router.push('/login');
+    },
+    test() {
+      console.log(localStorage.getItem("username"))
+    }
+  }
 }
 </script>
 

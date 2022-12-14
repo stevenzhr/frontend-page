@@ -1,37 +1,41 @@
 <template>
   <div style="padding: 10px">
-<!--    utilities-->
+<!--    utilities   -->
     <div style="margin: 10px 0">
       <el-button type="primary" @click="add">Add new device</el-button>
-      <el-button type="primary">Export</el-button>
-<!--      <el-button type="primary">Switch status</el-button>-->
+<!--      <el-button type="primary">Export</el-button>-->
     </div>
 
-<!--    search-->
+<!--    search box   -->
     <div style="margin: 10px 0">
       <el-input v-model="search" placeholder="Please input Device ID" style="width: 20%" clearable></el-input>
       <el-button type="primary" style="margin-left: 5px" @click="load">Search</el-button>
     </div>
-    <el-table :data="tableData"
-              border
-              stripe
-              style="width: 100%">
-      <el-table-column prop="deviceId" label="Device ID" />
-      <el-table-column prop="name" label="Name" />
-      <el-table-column prop="type" label="Type" />
-      <el-table-column prop="status" label="Status" />
-      <el-table-column label="Operations" width="200" align="center">
-        <template #default = "scope">
-          <el-button size="small" @click="handleEdit(scope.row)">On/Off</el-button>
-          <el-popconfirm title="Are you sure to delete this?" @confirm="handleDelete(scope.row.deviceId)">
-            <template #reference>
-              <el-button size="small" type="danger">Delete</el-button>
-            </template>
-          </el-popconfirm>
-        </template>
-      </el-table-column>
-    </el-table>
 
+<!--    device table -->
+    <div>
+      <el-table :data="tableData"
+                border
+                stripe
+                style="width: 100%">
+        <el-table-column prop="deviceId" label="Device ID" />
+        <el-table-column prop="name" label="Name" />
+        <el-table-column prop="type" label="Type" />
+        <el-table-column prop="status" label="Status" />
+        <el-table-column label="Operations" width="200" align="center">
+          <template #default = "scope">
+            <el-button size="small" @click="handleEdit(scope.row)">On/Off</el-button>
+            <el-popconfirm title="Are you sure to delete this?" @confirm="handleDelete(scope.row.deviceId)">
+              <template #reference>
+                <el-button size="small" type="danger">Delete</el-button>
+              </template>
+            </el-popconfirm>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
+<!--    add device pop out form-->
     <el-dialog
         v-model="dialogVisible"
         title="Tips"
@@ -53,9 +57,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="dialogVisible = false">Cancel</el-button>
-          <el-button type="primary" @click="save">
-            Confirm
-          </el-button>
+          <el-button type="primary" @click="save">Add device</el-button>
         </span>
       </template>
     </el-dialog>
@@ -88,7 +90,6 @@ export default {
         search: this.search
       }
       }).then(res => {
-        console.log(res)
         this.tableData = res.data
       })
     },
@@ -98,7 +99,6 @@ export default {
     },
     save() {
       request.post("http://localhost:9090/device", this.form).then(res => {
-        console.log(res)
         if (res.code === '0') {
           this.$message({
             type: "success",
@@ -122,13 +122,23 @@ export default {
       else
         this.form.status = "on"
       request.put("http://localhost:9090/device", this.form).then(res => {
+        if (res.code === '0') {
+          this.$message({
+            type: "success",
+            message: "Device has been switch " + this.form.status
+          })
+        } else {
+          this.$message({
+            type: "error",
+            message: res.msg
+          })
+        }
         this.load()
       })
 
     },
 
     handleDelete(deviceId) {
-      console.log(deviceId)
       request.delete("http://localhost:9090/device/" + deviceId).then(res => {
         if (res.code === '0') {
           this.$message({

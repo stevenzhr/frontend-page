@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from "@/router";
 
 // packaging axios
 
@@ -10,6 +11,11 @@ const request = axios.create({
 // request Interceptor
 request.interceptors.request.use(config => {
     config.headers['Content-Type'] = 'application/json;charset=utf-8';
+
+    let username = localStorage.getItem("username");
+    if (!username) {
+        router.push("/login");
+    }
 
     return config
 }, error => {

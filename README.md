@@ -1,26 +1,26 @@
-# See backend repostory at [Backend-server](https://github.com/stevenzhr/backend-server)
+# Smart Devices Management System
 
-# springboot-vue-demo
+A lightweight smart home device management system. This system can integrate smart devices which is based on WI-FI. And allows users to control them by HTML webpages. The system can be managed separately according to different user authority. In addition, User can also set customized automations between different devices.
 
-## Project setup
-```
-npm install
-```
+### Core features:
+* Post and display each smart devices status to frond-end.
+* Devices management: Add, store & delete devices.
+* User management: Add & delete user. User authority control.
+* Automations between smart devices.
+* ~~Receive communication data from smart devices.~~
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### Optional features:
+* Customized automations from front-end.
+* ~~Bluetooth's devices support.~~
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Technology stack:
+* Frontend: Vue3，vue router，vuex，element-plus，axios
+* Backend: SpringBoot，Mybatis-plus
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Backend repository: 
+See backend repository at [Backend-server](https://github.com/stevenzhr/backend-server)
 
-### External libiaries:
+### External libraries:
 Element+: component gallery based on Vue 3.0 
 
 
